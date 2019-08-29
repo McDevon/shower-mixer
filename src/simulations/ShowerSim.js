@@ -13,7 +13,7 @@ class BeerGameSimulation {
     }
 
     update(dt) {
-        console.log(`Time ${dt}`)
+        //console.log(`Time ${dt}`)
     }
 
     render(_) {
