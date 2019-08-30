@@ -19,11 +19,11 @@ const ShowerControl = ({ value, step, min, max, onChange, suffix='' }) => {
             onChange={onChange()}
             styles={{
                 track: {
-                  backgroundColor: 'blue',
+                  backgroundColor: 'red',
                   height: 300
                 },
                 active: {
-                  backgroundColor: 'red'
+                  backgroundColor: 'blue'
                 }
               }}
         />
