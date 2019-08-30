@@ -1,4 +1,5 @@
 import RingBuffer from "../simulations/RingBuffer";
+import Plotter from "./Plotter";
 
 class BeerGameSimulation {
 
@@ -29,7 +30,18 @@ class BeerGameSimulation {
             this.delayQueue.put(this.currentTemperature)
         }
 
-        this.graphList = new RingBuffer(30 * 60)
+        const graphLen = 30 * 60
+        this.graphList = new RingBuffer(graphLen)
+
+        this.plotter = new Plotter(
+            550, 350,
+            graphLen,
+            this.maxTemperature,
+            this.minTemperature,
+            this.canvas,
+            this.targetTemperature + 0.5,
+            this.targetTemperature - 0.5
+        )
 
         return this.mixerTemperature
     }
@@ -46,20 +58,21 @@ class BeerGameSimulation {
         }
 
         this.currentTemperature += diff
-        
+
         const nextTempValue = this.delayQueue.getTail()
         this.delayQueue.put(this.currentTemperature)
         this.graphList.put(nextTempValue)
-
-        console.log(`Current temp ${nextTempValue}`)
     }
 
-    update(dt) {
-        //console.log(`Time ${dt}`)
-    }
+    update(_) { }
 
     render(_) {
-        
+        const context = this.canvas.getContext('2d')
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+        this.plotter.draw(25, 25, this.graphList.getAll().filter(function (el) {
+            return el != null;
+        }))
     }
 }
 
