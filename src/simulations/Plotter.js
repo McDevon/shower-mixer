@@ -37,8 +37,13 @@ class Plotter {
         this.cx.beginPath()
         this.cx.moveTo(x, y)
         this.cx.lineTo(x, y + this.height)
-        this.cx.moveTo(x, y + this.height / 2)
-        this.cx.lineTo(x + this.width, y + this.height / 2)
+        this.cx.stroke()
+        this.cx.strokeStyle = '#777777'
+        this.cx.beginPath()
+        this.cx.moveTo(x, y + this.height - (this.verticalStep * (this.targetTop - this.bottom)))
+        this.cx.lineTo(x + this.width, y + this.height - (this.verticalStep * (this.targetTop - this.bottom)))
+        this.cx.moveTo(x, y + this.height - (this.verticalStep * (this.targetBottom - this.bottom)))
+        this.cx.lineTo(x + this.width, y + this.height - (this.verticalStep * (this.targetBottom - this.bottom)))
         this.cx.stroke()
     }
 }
