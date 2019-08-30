@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/shower-mixer/static/css/main.34de6062.chunk.css",
-    "main.js": "/shower-mixer/static/js/main.2fe1d199.chunk.js",
-    "main.js.map": "/shower-mixer/static/js/main.2fe1d199.chunk.js.map",
+    "main.js": "/shower-mixer/static/js/main.478bfee5.chunk.js",
+    "main.js.map": "/shower-mixer/static/js/main.478bfee5.chunk.js.map",
     "runtime~main.js": "/shower-mixer/static/js/runtime~main.decac445.js",
     "runtime~main.js.map": "/shower-mixer/static/js/runtime~main.decac445.js.map",
-    "static/js/2.a94d51e6.chunk.js": "/shower-mixer/static/js/2.a94d51e6.chunk.js",
-    "static/js/2.a94d51e6.chunk.js.map": "/shower-mixer/static/js/2.a94d51e6.chunk.js.map",
+    "static/js/2.f563019c.chunk.js": "/shower-mixer/static/js/2.f563019c.chunk.js",
+    "static/js/2.f563019c.chunk.js.map": "/shower-mixer/static/js/2.f563019c.chunk.js.map",
     "index.html": "/shower-mixer/index.html",
-    "precache-manifest.7cb49904af07fdc08f94e70002a59c60.js": "/shower-mixer/precache-manifest.7cb49904af07fdc08f94e70002a59c60.js",
+    "precache-manifest.a946d14689b5a94ea7723ec7c14e40ef.js": "/shower-mixer/precache-manifest.a946d14689b5a94ea7723ec7c14e40ef.js",
     "service-worker.js": "/shower-mixer/service-worker.js",
     "static/css/main.34de6062.chunk.css.map": "/shower-mixer/static/css/main.34de6062.chunk.css.map"
   }
