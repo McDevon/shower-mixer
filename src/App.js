@@ -6,7 +6,7 @@ const App = props => {
   const divStyle = {
     marginLeft: 'auto',
     marginRight: 'auto',
-    maxWidth: '900px'
+    maxWidth: '600px'
   }
 
   useEffect(() => {
