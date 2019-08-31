@@ -14,9 +14,6 @@ const ShowerMixer = props => {
         paddingLeft: '25px',
         paddingRight: '25px',
     }
-    const canvasStyle = {
-        border: ' 1px solid #aaa',
-    }
     const columnStyle = {
         display: 'inline-block',
         verticalAlign: 'top',
@@ -45,7 +42,7 @@ const ShowerMixer = props => {
     useEffect(startHook, [])
 
     return <div>
-        <canvas style={canvasStyle} ref={canvasElement} width="600" height="400" />
+        <canvas ref={canvasElement} width="600" height="400" />
         <div style={controlAreaStyle}>
             <div style={columnStyle}>
                 <ShowerControl
