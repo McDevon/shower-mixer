@@ -9,15 +9,15 @@ class BeerGameSimulation {
         this.width = canvas.width
         this.height = canvas.height
 
-        const delaySeconds = 5
+        const delaySeconds = 3
 
         this.delayQueue = new RingBuffer(delaySeconds * 60)
         this.running = true
 
         this.targetTemperature = 36
         this.minTemperature = 15
-        this.maxTemperature = 50
-        this.maxChangeSpeed = 3
+        this.maxTemperature = 55
+        this.maxChangeSpeed = 4
 
         this.maxDeltaSpeed = 0.02
         this.lastDiff = 0
@@ -26,7 +26,10 @@ class BeerGameSimulation {
     }
 
     reset() {
-        this.currentTemperature = 17 + Math.random() * 6
+
+        this.controlMinTemperature = this.minTemperature + Math.random() * 12
+        this.controlMaxTemperature = this.maxTemperature - Math.random() * 15
+        this.currentTemperature = this.controlMinTemperature + Math.random() * 3
         this.mixerTemperature = this.currentTemperature
 
         for (let i = 0; i < this.delayQueue.size; i++) {
@@ -46,13 +49,13 @@ class BeerGameSimulation {
             this.targetTemperature - 0.5
         )
 
-        const mixerValue = 1 - (this.mixerTemperature - this.minTemperature) / (this.maxTemperature - this.minTemperature)
+        const mixerValue = 1 - (this.mixerTemperature - this.controlMinTemperature) / (this.controlMaxTemperature - this.controlMinTemperature)
 
         return mixerValue
     }
 
     setMixer(mixerValue) {
-        this.mixerTemperature = this.minTemperature + (this.maxTemperature - this.minTemperature) * (1 - mixerValue)
+        this.mixerTemperature = this.controlMinTemperature + (this.controlMaxTemperature - this.controlMinTemperature) * (1 - mixerValue)
         console.log(`Target ${this.mixerTemperature}`)
     }
 
