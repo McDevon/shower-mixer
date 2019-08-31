@@ -28,7 +28,7 @@ class BeerGameSimulation {
     reset() {
 
         this.controlMinTemperature = this.minTemperature + Math.random() * 12
-        this.controlMaxTemperature = this.maxTemperature - Math.random() * 15
+        this.controlMaxTemperature = this.maxTemperature - Math.random() * 10
         this.currentTemperature = this.controlMinTemperature + Math.random() * 3
         this.mixerTemperature = this.currentTemperature
 

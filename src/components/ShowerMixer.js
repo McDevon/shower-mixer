@@ -42,9 +42,12 @@ const ShowerMixer = props => {
     useEffect(startHook, [])
 
     return <div>
-        <canvas ref={canvasElement} width="600" height="400" />
+        <canvas ref={canvasElement} width='600' height='400' />
         <div style={controlAreaStyle}>
             <div style={columnStyle}>
+                <div>
+                    {'Shower Mixer Control'}
+                </div>
                 <ShowerControl
                     value={shower.mixer}
                     min={0} max={1} step={0.0025}
