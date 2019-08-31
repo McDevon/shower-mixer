@@ -19,6 +19,9 @@ class BeerGameSimulation {
         this.maxTemperature = 50
         this.maxChangeSpeed = 3
 
+        this.maxDeltaSpeed = 0.02
+        this.lastDiff = 0
+
         this.reset()
     }
 
@@ -54,11 +57,22 @@ class BeerGameSimulation {
     }
 
     fixedUpdate(dt) {
-        let diff = (this.mixerTemperature - this.currentTemperature)
+        const distance = (this.mixerTemperature - this.currentTemperature)
+        let diff = distance
+        const slowDist = this.maxChangeSpeed / (this.maxDeltaSpeed * dt)
+        if (Math.abs(distance) < slowDist) {
+            const mul = Math.abs(distance) * this.maxDeltaSpeed
+            diff = Math.sign(distance) * mul
+        }
         if (Math.abs(diff) > this.maxChangeSpeed * dt) {
             diff = this.maxChangeSpeed * Math.sign(diff) * dt
         }
 
+        if (Math.abs(diff) > Math.abs(this.lastDiff) && Math.abs(this.lastDiff - diff) > this.maxDeltaSpeed * dt) {
+            diff = this.lastDiff + this.maxDeltaSpeed * dt * Math.sign(diff)
+        }
+
+        this.lastDiff = diff
         this.currentTemperature += diff
 
         const nextTempValue = this.delayQueue.getTail()
