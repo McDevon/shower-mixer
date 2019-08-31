@@ -43,7 +43,9 @@ class BeerGameSimulation {
             this.targetTemperature - 0.5
         )
 
-        return this.mixerTemperature
+        const mixerValue = 1 - (this.mixerTemperature - this.minTemperature) / (this.maxTemperature - this.minTemperature)
+
+        return mixerValue
     }
 
     setMixer(mixerValue) {

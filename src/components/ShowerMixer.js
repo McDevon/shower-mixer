@@ -5,7 +5,7 @@ import ShowerControl from './ShowerControl';
 
 const ShowerMixer = props => {
     const [shower, setShower] = useState({
-        mixer: 0.9
+        mixer: 1
     })
 
     const canvasElement = useRef(null)
@@ -38,8 +38,8 @@ const ShowerMixer = props => {
         console.log(props.location.search)
 
         startRender(canvasElement.current, showerSim())
-
-        canvasElement.current.simulation.setMixer(shower.mixer)
+        const showerVal = canvasElement.current.simulation.reset()
+        setShower({ mixer: showerVal })
     }
 
     useEffect(startHook, [])
