@@ -40,7 +40,6 @@ class BeerGameSimulation {
         this.graphList = new RingBuffer(graphLen)
 
         this.plotter = new Plotter(
-            550, 350,
             graphLen,
             this.maxTemperature,
             this.minTemperature,
@@ -89,7 +88,7 @@ class BeerGameSimulation {
         const context = this.canvas.getContext('2d')
         context.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-        this.plotter.draw(25, 25, this.graphList.getAll().filter(function (el) {
+        this.plotter.draw(this.graphList.getAll().filter(function (el) {
             return el != null;
         }))
     }
