@@ -25,16 +25,6 @@ const ShowerMixer = props => {
         marginLeft: '5px',
         marginRight: '5px'
     }
-    const ingressStyle = {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        width: '590px',
-        marginLeft: '5px',
-        marginRight: '5px',
-        paddingLeft: '25px',
-        paddingRight: '25px',
-        paddingTop: '20px'
-    }
     const canvasStyle = {
         marginLeft: '5px',
         marginRight: '5px',
@@ -64,7 +54,7 @@ const ShowerMixer = props => {
 
     return <div>
          <div style={titleAreaStyle}>
-            <h1>{'Have a Nice Shower'}</h1>
+            <h1>{'Have a Nice Shower!'}</h1>
             <p>{"You are entering a shower. But it's way too cold! Use the shower mixer controls to set the temperature to a reasonable setting."}</p>
             <p>{"You can follow the current temperature from the graph below. The proper temperature is marked with the green lines, so aim to get the temperature between them."}</p>
          </div>
