@@ -2,7 +2,7 @@ import RingBuffer from "../simulations/RingBuffer";
 import Plotter from "./Plotter";
 import PidController from "./PidController";
 
-class BeerGameSimulation {
+class ShowerSimulation {
 
     init(canvas) {
         this.canvas = canvas
@@ -64,6 +64,10 @@ class BeerGameSimulation {
 
     setRunning(value) {
         this.running = value
+    }
+
+    setPid(value) {
+        this.usePid = value
     }
 
     tempToMixer(value) {
@@ -137,7 +141,7 @@ class BeerGameSimulation {
 }
 
 const showerSim = () => {
-    return new BeerGameSimulation()
+    return new ShowerSimulation()
 }
 
 export default showerSim

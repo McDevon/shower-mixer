@@ -8,7 +8,8 @@ const ShowerMixer = props => {
     const [shower, setShower] = useState({
         mixer: 1,
         running: 0,
-        completed: 0
+        completed: 0,
+        pid: 0
     })
 
     const canvasElement = useRef(null)
@@ -63,28 +64,46 @@ const ShowerMixer = props => {
 
     const restartSelected = (event) => {
         event.preventDefault()
-        console.log('Start selected')
-        const showerVal = canvasElement.current.simulation.reset(completionCallback)
+        console.log('Restart selected')
+        const showerVal = canvasElement.current.simulation.reset(completionCallback(0))
         const newShower = {
             ...shower,
             mixer: showerVal,
             running: 1,
-            completed: 0
+            completed: 0,
+            pid: 0
         }
         setShower(newShower)
+        canvasElement.current.simulation.setPid(false)
         canvasElement.current.simulation.setRunning(true)
     }
 
-    const completionCallback = (mixerValue) => {
+    const pidSelected = (event) => {
+        event.preventDefault()
+        console.log('PID selected')
+        const showerVal = canvasElement.current.simulation.reset(completionCallback(1))
+        const newShower = {
+            ...shower,
+            mixer: showerVal,
+            running: 1,
+            completed: 0,
+            pid: 1
+        }
+        setShower(newShower)
+        canvasElement.current.simulation.setPid(true)
+        canvasElement.current.simulation.setRunning(true)
+    }
+
+    const completionCallback = (pid) => (mixerValue) => {
         console.log('COMPLETION CALLBACK', shower)
         canvasElement.current.simulation.setRunning(false)
         const newShower = {
             ...shower,
             mixer: mixerValue,
             running: 0,
-            completed: 1
+            completed: 1,
+            pid: pid
         }
-        console.log('Values', newShower)
         setShower(newShower)
     }
 
@@ -93,19 +112,26 @@ const ShowerMixer = props => {
         console.log(props.location.search)
 
         startRender(canvasElement.current, showerSim())
-        const showerVal = canvasElement.current.simulation.reset(completionCallback)
+        const showerVal = canvasElement.current.simulation.reset(completionCallback(shower.pid))
         setShower({ ...shower, mixer: showerVal })
     }
 
     useEffect(startHook, [])
 
-    const RightColumn = ({ visible }) => {
-        if (visible) {
+    const RightColumn = ({ visible, pid }) => {
+        if (pid) {
+            return <div style={fullColumnStyle}>
+                {'PID controls'}
+                <Button text='Restart PID' onClick={pidSelected} />
+                <Button text='Manual Control' onClick={restartSelected} />
+           </div>
+        } else if (visible) {
             return <div style={fullColumnStyle}>
                 <h2>{'Well done!'}</h2>
                 <p>{"This demo explores the behaviour of shower users, when there is a noticeable delay between controlling the mixer (input) and the temperature change (output)."}</p>
-                <p>{"The hypothesis is that the feedback loop created by the user and the shower makes the system output first oscillate, and then stabilizes at the convenient temperature. Much like a suboptimally calibrated PI controller would control the system."}</p>
+                <p>{"The hypothesis is that the feedback loop created by the user and the shower makes the system output first oscillate, and then stabilizes at the convenient temperature. Much like a PI controller with overshooting calibration would control the system."}</p>
                 <Button text='Restart' onClick={restartSelected} disabled={!shower.completed} />
+                <Button text='Run with PI controller' onClick={pidSelected} />
             </div>
         } else {
             return <div style={fullColumnStyle}></div>
@@ -131,7 +157,7 @@ const ShowerMixer = props => {
                     onChange={() => ({ y }) => { if (shower.running) changeShower({ ...shower, mixer: y }) }}
                 />
             </div>
-            <RightColumn visible={shower.completed} />
+            <RightColumn visible={shower.completed} pid={shower.pid} />
         </div>
     </div>
 }
