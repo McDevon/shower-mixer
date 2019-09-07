@@ -19,12 +19,20 @@ const ShowerMixer = props => {
     }
     const controlAreaStyle = {
         paddingLeft: '25px',
+        width: '590px',
         paddingRight: '25px',
     }
     const columnStyle = {
         display: 'inline-block',
         verticalAlign: 'top',
         width: '200px',
+        marginLeft: '5px',
+        marginRight: '5px'
+    }
+    const fullColumnStyle = {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        width: '370px',
         marginLeft: '5px',
         marginRight: '5px'
     }
@@ -53,6 +61,20 @@ const ShowerMixer = props => {
         setShower({ ...shower, running: 1 })
     }
 
+    const restartSelected = (event) => {
+        event.preventDefault()
+        console.log('Start selected')
+        const showerVal = canvasElement.current.simulation.reset(completionCallback)
+        const newShower = {
+            ...shower,
+            mixer: showerVal,
+            running: 1,
+            completed: 0
+        }
+        setShower(newShower)
+        canvasElement.current.simulation.setRunning(true)
+    }
+
     const completionCallback = (mixerValue) => {
         console.log('COMPLETION CALLBACK', shower)
         canvasElement.current.simulation.setRunning(false)
@@ -77,6 +99,19 @@ const ShowerMixer = props => {
 
     useEffect(startHook, [])
 
+    const RightColumn = ({ visible }) => {
+        if (visible) {
+            return <div style={fullColumnStyle}>
+                <h2>{'Well done!'}</h2>
+                <p>{"This demo explores the behaviour of shower users, when there is a noticeable delay between controlling the mixer (input) and the temperature change (output)."}</p>
+                <p>{"The hypothesis is that the feedback loop created by the user and the shower makes the system output first oscillate, and then stabilizes at the convenient temperature. Much like a suboptimally calibrated PI controller would control the system."}</p>
+                <Button text='Restart' onClick={restartSelected} disabled={!shower.completed} />
+            </div>
+        } else {
+            return <div style={fullColumnStyle}></div>
+        }
+    }
+
     return <div>
         <div style={titleAreaStyle}>
             <h1>{'Have a Nice Shower!'}</h1>
@@ -96,6 +131,7 @@ const ShowerMixer = props => {
                     onChange={() => ({ y }) => { if (shower.running) changeShower({ ...shower, mixer: y }) }}
                 />
             </div>
+            <RightColumn visible={shower.completed} />
         </div>
     </div>
 }
