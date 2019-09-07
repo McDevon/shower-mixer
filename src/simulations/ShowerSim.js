@@ -66,8 +66,14 @@ class ShowerSimulation {
         this.running = value
     }
 
-    setPid(value) {
+    setUsePid(value) {
         this.usePid = value
+    }
+
+    setPidValues({p, i, d}) {
+        this.pid.p = p
+        this.pid.i = i
+        this.pid.d = d
     }
 
     tempToMixer(value) {

@@ -3,6 +3,7 @@ import startRender from '../simulations/RenderLoop'
 import showerSim from '../simulations/ShowerSim'
 import ShowerControl from './ShowerControl';
 import Button from './Button';
+import InfoColumn from './InfoColumn';
 
 const ShowerMixer = props => {
     const [shower, setShower] = useState({
@@ -10,6 +11,11 @@ const ShowerMixer = props => {
         running: 0,
         completed: 0,
         pid: 0
+    })
+    const [pid, setPid] = useState({
+        p: 0.001,
+        i: 0.00015,
+        d: 0
     })
 
     const canvasElement = useRef(null)
@@ -27,13 +33,6 @@ const ShowerMixer = props => {
         display: 'inline-block',
         verticalAlign: 'top',
         width: '200px',
-        marginLeft: '5px',
-        marginRight: '5px'
-    }
-    const fullColumnStyle = {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        width: '370px',
         marginLeft: '5px',
         marginRight: '5px'
     }
@@ -55,6 +54,12 @@ const ShowerMixer = props => {
         canvasElement.current.simulation.setMixer(newShower.mixer)
     }
 
+    const changePid = (newPid) => {
+        console.log('Set pid', pid, newPid)
+        setPid(newPid)
+        canvasElement.current.simulation.setPidValues(newPid)
+    }
+
     const startSelected = (event) => {
         event.preventDefault()
         console.log('Start selected')
@@ -74,7 +79,7 @@ const ShowerMixer = props => {
             pid: 0
         }
         setShower(newShower)
-        canvasElement.current.simulation.setPid(false)
+        canvasElement.current.simulation.setUsePid(false)
         canvasElement.current.simulation.setRunning(true)
     }
 
@@ -90,19 +95,20 @@ const ShowerMixer = props => {
             pid: 1
         }
         setShower(newShower)
-        canvasElement.current.simulation.setPid(true)
+        canvasElement.current.simulation.setPidValues(pid)
+        canvasElement.current.simulation.setUsePid(true)
         canvasElement.current.simulation.setRunning(true)
     }
 
-    const completionCallback = (pid) => (mixerValue) => {
-        console.log('COMPLETION CALLBACK', shower)
+    const completionCallback = (usePid) => (mixerValue) => {
+        console.log('COMPLETION CALLBACK', shower, usePid)
         canvasElement.current.simulation.setRunning(false)
         const newShower = {
             ...shower,
             mixer: mixerValue,
             running: 0,
             completed: 1,
-            pid: pid
+            pid: usePid
         }
         setShower(newShower)
     }
@@ -113,30 +119,13 @@ const ShowerMixer = props => {
 
         startRender(canvasElement.current, showerSim())
         const showerVal = canvasElement.current.simulation.reset(completionCallback(shower.pid))
+        canvasElement.current.simulation.setPidValues(pid)
+        canvasElement.current.simulation.setUsePid(shower.pid)
+        canvasElement.current.simulation.setRunning(shower.running)
         setShower({ ...shower, mixer: showerVal })
     }
 
     useEffect(startHook, [])
-
-    const RightColumn = ({ visible, pid }) => {
-        if (pid) {
-            return <div style={fullColumnStyle}>
-                {'PID controls'}
-                <Button text='Restart PID' onClick={pidSelected} />
-                <Button text='Manual Control' onClick={restartSelected} />
-           </div>
-        } else if (visible) {
-            return <div style={fullColumnStyle}>
-                <h2>{'Well done!'}</h2>
-                <p>{"This demo explores the behaviour of shower users, when there is a noticeable delay between controlling the mixer (input) and the temperature change (output)."}</p>
-                <p>{"The hypothesis is that the feedback loop created by the user and the shower makes the system output first oscillate, and then stabilizes at the convenient temperature. Much like a PI controller with overshooting calibration would control the system."}</p>
-                <Button text='Restart' onClick={restartSelected} disabled={!shower.completed} />
-                <Button text='Run with PI controller' onClick={pidSelected} />
-            </div>
-        } else {
-            return <div style={fullColumnStyle}></div>
-        }
-    }
 
     return <div>
         <div style={titleAreaStyle}>
@@ -157,7 +146,9 @@ const ShowerMixer = props => {
                     onChange={() => ({ y }) => { if (shower.running && !shower.pid) changeShower({ ...shower, mixer: y }) }}
                 />
             </div>
-            <RightColumn visible={shower.completed} pid={shower.pid} />
+            <InfoColumn visible={shower.completed} showPid={shower.pid}
+                pidSelected={pidSelected} restartSelected={restartSelected}
+                pid={pid} changePid={changePid} shower={shower} />
         </div>
     </div>
 }
