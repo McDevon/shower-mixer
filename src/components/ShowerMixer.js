@@ -154,7 +154,7 @@ const ShowerMixer = props => {
                 <ShowerControl
                     value={shower.mixer}
                     min={0} max={1} step={0.0025}
-                    onChange={() => ({ y }) => { if (shower.running) changeShower({ ...shower, mixer: y }) }}
+                    onChange={() => ({ y }) => { if (shower.running && !shower.pid) changeShower({ ...shower, mixer: y }) }}
                 />
             </div>
             <RightColumn visible={shower.completed} pid={shower.pid} />
