@@ -1,5 +1,6 @@
 import RingBuffer from "../simulations/RingBuffer";
 import Plotter from "./Plotter";
+import PidController from "./PidController";
 
 class BeerGameSimulation {
 
@@ -25,6 +26,7 @@ class BeerGameSimulation {
         this.lastDiff = 0
 
         this.running = false
+        this.usePid = false
 
         this.reset()
     }
@@ -53,6 +55,9 @@ class BeerGameSimulation {
             this.targetTemperature - 0.5
         )
 
+        this.pid = new PidController(0.001, 0.00015, 0,
+            0, 1, true)
+
         const mixerValue = this.tempToMixer(this.mixerTemperature)
         return mixerValue
     }
@@ -65,18 +70,27 @@ class BeerGameSimulation {
         return 1 - (value - this.controlMinTemperature) / (this.controlMaxTemperature - this.controlMinTemperature)
     }
 
+    mixerToTemp(value) {
+        return this.controlMinTemperature + (this.controlMaxTemperature - this.controlMinTemperature) * (1 - value)
+    }
+
     completed() {
         console.log('COMPLETED!')
         this.completionCallback(this.tempToMixer(this.mixerTemperature))
     }
 
     setMixer(mixerValue) {
-        this.mixerTemperature = this.controlMinTemperature + (this.controlMaxTemperature - this.controlMinTemperature) * (1 - mixerValue)
+        this.mixerTemperature = this.mixerToTemp(mixerValue)
         console.log(`Target ${this.mixerTemperature}`)
     }
 
     fixedUpdate(dt) {
         if (!this.running) { return }
+
+        if (this.usePid) {
+            const controlValue = 1 - this.pid.step(this.delayQueue.getTail() || this.currentTemperature, this.targetTemperature)
+            this.mixerTemperature = this.mixerToTemp(controlValue)
+        }
 
         const distance = (this.mixerTemperature - this.currentTemperature)
         let diff = distance
@@ -108,7 +122,6 @@ class BeerGameSimulation {
         } else {
             this.completeTimer = 0
         }
-        console.log(`Complete timer ${this.completeTimer}`)
     }
 
     update(_) { }
