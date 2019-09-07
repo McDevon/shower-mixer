@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const Button = ({ onClick, text, disabled }) => {
 
     const StyledButton = styled.button`
-    background-color: ${disabled ? '#c2c9b7' : '#4CAF50'};
+    background-color: ${disabled ? '#c4cfc1' : '#4CAF50'};
     border: none;
     border-radius: 4px;
     color: white;
@@ -16,7 +16,7 @@ const Button = ({ onClick, text, disabled }) => {
     font-size: 16px;
     opacity: ${disabled ? '0.6' : '1'};
     :hover {
-        background-color: ${disabled ? '#c2c9b7' : '#5bc146'};
+        background-color: ${disabled ? '#c4cfc1' : '#5bc146'};
     }
     :focus {
         outline: none;
