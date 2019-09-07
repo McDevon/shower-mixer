@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import startRender from '../simulations/RenderLoop'
 import showerSim from '../simulations/ShowerSim'
 import ShowerControl from './ShowerControl';
+import Button from './Button';
 
 const ShowerMixer = props => {
     const [shower, setShower] = useState({
-        mixer: 1
+        mixer: 1,
+        running: 0,
+        completed: 0
     })
 
     const canvasElement = useRef(null)
@@ -35,10 +38,32 @@ const ShowerMixer = props => {
 
     const changeShower = ({ mixer }) => {
         const newShower = {
+            ...shower,
             mixer: mixer
         }
+        console.log('Change shower', newShower)
         setShower(newShower)
         canvasElement.current.simulation.setMixer(newShower.mixer)
+    }
+
+    const startSelected = (event) => {
+        event.preventDefault()
+        console.log('Start selected')
+        canvasElement.current.simulation.setRunning(true)
+        setShower({ ...shower, running: 1 })
+    }
+
+    const completionCallback = (mixerValue) => {
+        console.log('COMPLETION CALLBACK', shower)
+        canvasElement.current.simulation.setRunning(false)
+        const newShower = {
+            ...shower,
+            mixer: mixerValue,
+            running: 0,
+            completed: 1
+        }
+        console.log('Values', newShower)
+        setShower(newShower)
     }
 
     const startHook = () => {
@@ -46,18 +71,19 @@ const ShowerMixer = props => {
         console.log(props.location.search)
 
         startRender(canvasElement.current, showerSim())
-        const showerVal = canvasElement.current.simulation.reset()
-        setShower({ mixer: showerVal })
+        const showerVal = canvasElement.current.simulation.reset(completionCallback)
+        setShower({ ...shower, mixer: showerVal })
     }
 
     useEffect(startHook, [])
 
     return <div>
-         <div style={titleAreaStyle}>
+        <div style={titleAreaStyle}>
             <h1>{'Have a Nice Shower!'}</h1>
             <p>{"You are entering a shower. But it's way too cold! Use the shower mixer controls to set the temperature to a reasonable setting."}</p>
-            <p>{"You can follow the current temperature from the graph below. The proper temperature is marked with the green lines, so aim to get the temperature between them."}</p>
-         </div>
+            <p>{"You can follow the current temperature from the graph below. The convenient zone is marked with the green lines, so aim to get the temperature between them."}</p>
+            <Button text='Start' onClick={startSelected} disabled={shower.running || shower.completed} />
+        </div>
         <canvas style={canvasStyle} ref={canvasElement} width='590' height='400' />
         <div style={controlAreaStyle}>
             <div style={columnStyle}>
@@ -67,7 +93,7 @@ const ShowerMixer = props => {
                 <ShowerControl
                     value={shower.mixer}
                     min={0} max={1} step={0.0025}
-                    onChange={() => ({ y }) => changeShower({ ...shower, mixer: y })}
+                    onChange={() => ({ y }) => { if (shower.running) changeShower({ ...shower, mixer: y }) }}
                 />
             </div>
         </div>

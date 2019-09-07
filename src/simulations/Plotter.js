@@ -13,10 +13,9 @@ class Plotter {
         this.stepLength = (this.width - this.margin * 2) / maxVals
         this.verticalStep = (this.height - this.margin * 2) / (top - bottom)
         this.cx = canvas.getContext('2d')
-
     }
 
-    drawLine(value, prevx, prevStartX, posTop, posBottom, region) {
+    drawChartLine(value, prevx, prevStartX, posTop, posBottom, region) {
         this.cx.stroke()
         
         if (region !== 1) {
@@ -32,7 +31,6 @@ class Plotter {
         const x0 = this.pixel(this.margin), y0 = this.pixel(this.margin)
         const x1 = this.pixel(x0 + this.width - this.margin * 2), y1 = this.pixel(y0 + this.height - this.margin * 2)
         
-        
         const posTop = y0 + this.height - (this.verticalStep * (this.targetTop - this.bottom))
         const posBottom = y0 + this.height - (this.verticalStep * (this.targetBottom - this.bottom))
         this.cx.strokeStyle = '#002200'
@@ -43,7 +41,6 @@ class Plotter {
         this.cx.beginPath()
         this.cx.moveTo(prevx, prevy)
 
-        let strokeCount = 0
         let prevStartX = x0
         let prevValue = data[0]
         for (let i = 0, count = data.length; i < count; i++) {
@@ -52,10 +49,9 @@ class Plotter {
             const xd = x0 + this.stepLength * i
             const yd = y0 + this.height - (this.verticalStep * (value - this.bottom))
             if (region !== prevRegion) {
-                this.drawLine(prevValue, prevx, prevStartX, posTop, posBottom, prevRegion)
+                this.drawChartLine(prevValue, prevx, prevStartX, posTop, posBottom, prevRegion)
                 this.cx.beginPath()
                 this.cx.moveTo(prevx, prevy)
-                strokeCount += 1
                 prevRegion = region
                 prevStartX = prevx
                 prevValue = value
@@ -65,9 +61,8 @@ class Plotter {
             prevx = xd
             prevy = yd
         }
-        this.drawLine(prevValue, prevx, prevStartX, posTop, posBottom, prevRegion)
+        this.drawChartLine(prevValue, prevx, prevStartX, posTop, posBottom, prevRegion)
         
-        console.log(`Strokes: ${strokeCount}`)
         this.cx.strokeStyle = '#000000'
         this.cx.fillStyle = '#000000'
         this.cx.lineWidth = 1
