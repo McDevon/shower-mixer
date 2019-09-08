@@ -54,7 +54,7 @@ The following features are implemented:
 
 ## Issues and missing features
 
-Known issues:
+### Known issues:
 
 - Does not work well on mobile
 - The layout takes too much space vertically
@@ -63,7 +63,7 @@ Known issues:
 - Quick-n-dirty hacks to make simulation running
 - Most likely a lot of non-idiomatic code
 
-Missing features:
+### Missing features:
 
 - Live view of PID controller internal values
 - Mode with continuously changing target
