@@ -1,8 +1,9 @@
 import React from 'react'
 import PidControls from './PidControls';
 import Button from './Button';
+import { pure } from 'recompose'
 
-const InfoColumn = ({ visible, showPid, completed,
+const InfoColumn = pure(({ visible, showPid, completed,
     pidSelected, restartSelected,
     pid, changePid }) => {
 
@@ -35,6 +36,6 @@ const InfoColumn = ({ visible, showPid, completed,
     } else {
         return <div style={fullColumnStyle}></div>
     }
-}
+})
 
 export default InfoColumn

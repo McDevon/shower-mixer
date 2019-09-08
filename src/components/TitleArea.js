@@ -1,8 +1,8 @@
 import React from 'react'
 import Button from './Button';
+import { pure } from 'recompose'
 
-const TitleArea = ({ startSelected, startDisabled }) => {
-
+const TitleArea = pure(({ startSelected, startDisabled }) => {
     const titleAreaStyle = {
         paddingLeft: '25px',
         paddingRight: '25px',
@@ -14,6 +14,6 @@ const TitleArea = ({ startSelected, startDisabled }) => {
         <p>{"You can follow the current temperature from the graph below. The convenient zone is marked with the green lines, so aim to get the temperature between them."}</p>
         <Button text='Start' onClick={startSelected} disabled={startDisabled} />
     </div>
-}
+})
 
 export default TitleArea
