@@ -24,62 +24,6 @@ class ShowerMixer extends React.Component {
             }
         }
         this.canvasElement = React.createRef()
-
-        this.completionCallback = (usePid) => (completionTime) => {
-            console.log('COMPLETION CALLBACK', completionTime)
-            this.canvasElement.current.simulation.setRunning(false)
-            const newState = {
-                running: 0,
-                completed: 1,
-                pid: usePid
-            }
-            this.setState({ page: newState, time: completionTime })
-        }
-        this.pidCallback = (controlValue) => {
-            this.setState({ shower: controlValue })
-        }
-        this.startSelected = (event) => {
-            event.preventDefault()
-            console.log('Start selected')
-            this.canvasElement.current.simulation.setRunning(true)
-            this.setState({ page: {...this.state.pageState, running: 1} })
-        }
-        this.pidSelected = (event) => {
-            event.preventDefault()
-            console.log('PID selected')
-            this.setState({ shower: this.canvasElement.current.simulation.reset(this.completionCallback(1), this.pidCallback) })
-            const newState = {
-                running: 1,
-                completed: 0,
-                pid: 1
-            }
-            this.setState({ page: newState })
-            this.canvasElement.current.simulation.setPidValues(this.state.pid)
-            this.canvasElement.current.simulation.setUsePid(true)
-            this.canvasElement.current.simulation.setRunning(true)
-        }
-        this.restartSelected = (event) => {
-            event.preventDefault()
-            console.log('Restart selected')
-            this.setState({ shower: this.canvasElement.current.simulation.reset(this.completionCallback(0), this.pidCallback) })
-            const newState = {
-                running: 1,
-                completed: 0,
-                pid: 0
-            }
-            this.setState({ page: newState })
-            this.canvasElement.current.simulation.setUsePid(false)
-            this.canvasElement.current.simulation.setRunning(true)
-        }
-        this.changePid = (newPid) => {
-            this.setState({ pid: newPid })
-            this.canvasElement.current.simulation.setPidValues(newPid)
-        }
-        this.changeShower = (mixer) => {
-            console.log('Change shower', mixer)
-            this.setState({ shower: mixer })
-            this.canvasElement.current.simulation.setMixer(mixer)
-        }
     }
 
     componentDidMount() {
@@ -89,6 +33,70 @@ class ShowerMixer extends React.Component {
         this.canvasElement.current.simulation.setUsePid(this.state.page.pid)
         this.canvasElement.current.simulation.setRunning(this.state.page.running)
         this.setState({ shower: showerVal })
+    }
+
+    completionCallback = (usePid) => {
+        return (completionTime) => {
+            console.log('COMPLETION CALLBACK', completionTime)
+            this.canvasElement.current.simulation.setRunning(false)
+            const newState = {
+                running: 0,
+                completed: 1,
+                pid: usePid
+            }
+            this.setState({ page: newState, time: completionTime })
+        }
+    }
+
+    pidCallback = (controlValue) => {
+        this.setState({ shower: controlValue })
+    }
+
+    startSelected = (event) => {
+        event.preventDefault()
+        console.log('Start selected')
+        this.canvasElement.current.simulation.setRunning(true)
+        this.setState({ page: { ...this.state.pageState, running: 1 } })
+    }
+
+    pidSelected = (event) => {
+        event.preventDefault()
+        console.log('PID selected')
+        this.setState({ shower: this.canvasElement.current.simulation.reset(this.completionCallback(1), this.pidCallback) })
+        const newState = {
+            running: 1,
+            completed: 0,
+            pid: 1
+        }
+        this.setState({ page: newState })
+        this.canvasElement.current.simulation.setPidValues(this.state.pid)
+        this.canvasElement.current.simulation.setUsePid(true)
+        this.canvasElement.current.simulation.setRunning(true)
+    }
+
+    restartSelected = (event) => {
+        event.preventDefault()
+        console.log('Restart selected')
+        this.setState({ shower: this.canvasElement.current.simulation.reset(this.completionCallback(0), this.pidCallback) })
+        const newState = {
+            running: 1,
+            completed: 0,
+            pid: 0
+        }
+        this.setState({ page: newState })
+        this.canvasElement.current.simulation.setUsePid(false)
+        this.canvasElement.current.simulation.setRunning(true)
+    }
+
+    changePid = (newPid) => {
+        this.setState({ pid: newPid })
+        this.canvasElement.current.simulation.setPidValues(newPid)
+    }
+
+    changeShower = (mixer) => {
+        console.log('Change shower', mixer)
+        this.setState({ shower: mixer })
+        this.canvasElement.current.simulation.setMixer(mixer)
     }
 
     render() {
@@ -127,7 +135,7 @@ class ShowerMixer extends React.Component {
                         min={0} max={1} step={0.0025}
                         onChange={() => ({ y }) => { if (this.state.page.running && !this.state.page.pid) this.changeShower(y) }}
                     />
-                    <CompletionDisplay completed={this.state.page.completed} time={this.state.time}/>
+                    <CompletionDisplay completed={this.state.page.completed} time={this.state.time} />
                 </div>
                 <InfoColumn visible={this.state.page.completed} showPid={this.state.page.pid}
                     pidSelected={this.pidSelected} restartSelected={this.restartSelected}
