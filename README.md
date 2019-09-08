@@ -1,10 +1,24 @@
+# Shower Mixer Simulator
+
+> An interactive demo exploring the effects of delay in feedback systems
+
+This project was inspired by the shower mixer example in [The Fifth Discipline](https://en.wikipedia.org/wiki/The_Fifth_Discipline) by Peter Senge. It allows exploring the shower example both manually and with a PID controller.
+
+In addition, this my my toy project to learn basics of React and relearn some JavaScript.
+
+Live demo available [online](https://mcdevon.github.io/shower-mixer).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Getting Started
+
+To install the app, run:
+
+#### `npm install`
 
 In the project directory, you can run:
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,12 +26,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
+#### `npm run build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -25,44 +34,41 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### `npm run deploy`
 
-### `npm run eject`
+Builds the app for production and deploys it to Gihub Pages.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Features
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The following features are implemented:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Delay and smoothing of the output
+- Graph to visualize the output
+- PID controller as an alternative control scheme
+- Tuning sliders for the PID controller
+- Display of completion time
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Issues and missing features
 
-## Learn More
+Known issues:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Does not work well on mobile
+- The layout takes too much space vertically
+- PID controls are arbitrarily clamped
+- Quick-n-dirty hacks to make simulation running
+- Most likely a lot of non-idiomatic code
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Missing features:
 
-### Code Splitting
+- Live view of PID controller internal values
+- Mode with continuously changing target
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Contributing
 
-### Analyzing the Bundle Size
+As this is mainly a toy and learning project, my responses to any raised issues may be slow. In any case, you are welcome to [open an issue](https://github.com/McDevon/shower-mixer/issues/new) to write down any thoughts you may have on the project.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
 
-### Making a Progressive Web App
+## Licensing
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+This project is licensed under the MIT license.
