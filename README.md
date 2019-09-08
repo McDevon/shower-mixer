@@ -10,6 +10,10 @@ Live demo available [online](https://mcdevon.github.io/shower-mixer).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Preview
+
+<img src="graph-anim.gif">
+
 ## Getting Started
 
 To install the app, run:
