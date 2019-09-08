@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import startRender from '../simulations/RenderLoop'
 import showerSim from '../simulations/ShowerSim'
 import ShowerControl from './ShowerControl';
-import Button from './Button';
 import InfoColumn from './InfoColumn';
+import TitleArea from './TitleArea';
 
 const ShowerMixer = props => {
-    const [shower, setShower] = useState({
-        mixer: 1,
+    const [shower, setShower] = useState(1)
+    const [pageState, setPageState] = useState({
         running: 0,
         completed: 0,
         pid: 0
@@ -20,10 +20,6 @@ const ShowerMixer = props => {
 
     const canvasElement = useRef(null)
 
-    const titleAreaStyle = {
-        paddingLeft: '25px',
-        paddingRight: '25px',
-    }
     const controlAreaStyle = {
         paddingLeft: '25px',
         width: '590px',
@@ -44,14 +40,14 @@ const ShowerMixer = props => {
         paddingTop: '10px'
     }
 
-    const changeShower = ({ mixer }) => {
-        const newShower = {
-            ...shower,
-            mixer: mixer
-        }
-        console.log('Change shower', newShower)
-        setShower(newShower)
-        canvasElement.current.simulation.setMixer(newShower.mixer)
+    const changeShower = (mixer) => {
+        console.log('Change shower', mixer)
+        setShower(mixer)
+        canvasElement.current.simulation.setMixer(mixer)
+    }
+
+    const changePageState = (state) => {
+        setPageState(state)
     }
 
     const changePid = (newPid) => {
@@ -64,21 +60,19 @@ const ShowerMixer = props => {
         event.preventDefault()
         console.log('Start selected')
         canvasElement.current.simulation.setRunning(true)
-        setShower({ ...shower, running: 1 })
+        changePageState({ ...pageState, running: 1 })
     }
 
     const restartSelected = (event) => {
         event.preventDefault()
         console.log('Restart selected')
-        const showerVal = canvasElement.current.simulation.reset(completionCallback(0))
-        const newShower = {
-            ...shower,
-            mixer: showerVal,
+        setShower(canvasElement.current.simulation.reset(completionCallback(0), pidCallback))
+        const newState = {
             running: 1,
             completed: 0,
             pid: 0
         }
-        setShower(newShower)
+        setPageState(newState)
         canvasElement.current.simulation.setUsePid(false)
         canvasElement.current.simulation.setRunning(true)
     }
@@ -86,15 +80,13 @@ const ShowerMixer = props => {
     const pidSelected = (event) => {
         event.preventDefault()
         console.log('PID selected')
-        const showerVal = canvasElement.current.simulation.reset(completionCallback(1))
-        const newShower = {
-            ...shower,
-            mixer: showerVal,
+        setShower(canvasElement.current.simulation.reset(completionCallback(1), pidCallback))
+        const newState = {
             running: 1,
             completed: 0,
             pid: 1
         }
-        setShower(newShower)
+        setPageState(newState)
         canvasElement.current.simulation.setPidValues(pid)
         canvasElement.current.simulation.setUsePid(true)
         canvasElement.current.simulation.setRunning(true)
@@ -103,14 +95,16 @@ const ShowerMixer = props => {
     const completionCallback = (usePid) => (mixerValue) => {
         console.log('COMPLETION CALLBACK', shower, usePid)
         canvasElement.current.simulation.setRunning(false)
-        const newShower = {
-            ...shower,
-            mixer: mixerValue,
+        const newState = {
             running: 0,
             completed: 1,
             pid: usePid
         }
-        setShower(newShower)
+        setPageState(newState)
+    }
+
+    const pidCallback = (controlValue) => {
+        //setShower(controlValue)
     }
 
     const startHook = () => {
@@ -118,22 +112,19 @@ const ShowerMixer = props => {
         console.log(props.location.search)
 
         startRender(canvasElement.current, showerSim())
-        const showerVal = canvasElement.current.simulation.reset(completionCallback(shower.pid))
+        const showerVal = canvasElement.current.simulation.reset(completionCallback(pageState.pid), pidCallback)
         canvasElement.current.simulation.setPidValues(pid)
-        canvasElement.current.simulation.setUsePid(shower.pid)
-        canvasElement.current.simulation.setRunning(shower.running)
-        setShower({ ...shower, mixer: showerVal })
+        canvasElement.current.simulation.setUsePid(pageState.pid)
+        canvasElement.current.simulation.setRunning(pageState.running)
+        setShower(showerVal)
     }
 
     useEffect(startHook, [])
 
     return <div>
-        <div style={titleAreaStyle}>
-            <h1>{'Have a Nice Shower!'}</h1>
-            <p>{"You are entering a shower. But it's way too cold! Use the shower mixer controls to set the temperature to a reasonable setting."}</p>
-            <p>{"You can follow the current temperature from the graph below. The convenient zone is marked with the green lines, so aim to get the temperature between them."}</p>
-            <Button text='Start' onClick={startSelected} disabled={shower.running || shower.completed} />
-        </div>
+        <TitleArea
+            startSelected={startSelected}
+            startDisabled={pageState.running || pageState.completed}/>
         <canvas style={canvasStyle} ref={canvasElement} width='590' height='400' />
         <div style={controlAreaStyle}>
             <div style={columnStyle}>
@@ -141,14 +132,14 @@ const ShowerMixer = props => {
                     {'Shower Mixer Control'}
                 </div>
                 <ShowerControl
-                    value={shower.mixer}
+                    value={shower}
                     min={0} max={1} step={0.0025}
-                    onChange={() => ({ y }) => { if (shower.running && !shower.pid) changeShower({ ...shower, mixer: y }) }}
+                    onChange={() => ({ y }) => { if (pageState.running && !pageState.pid) changeShower(y) }}
                 />
             </div>
-            <InfoColumn visible={shower.completed} showPid={shower.pid}
+            <InfoColumn visible={pageState.completed} showPid={pageState.pid}
                 pidSelected={pidSelected} restartSelected={restartSelected}
-                pid={pid} changePid={changePid} shower={shower} />
+                pid={pid} changePid={changePid} shower={shower} completed={pageState.completed} />
         </div>
     </div>
 }

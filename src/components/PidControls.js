@@ -7,8 +7,8 @@ const PidControls = ({ pid, changePid }) => {
         padding: '10px 0px'
     }
 
-    const maxP = 1, maxI = 0.0003, maxD = 5
-    const stepP = maxP / 200.0, stepI = maxI / 200.0, stepD = maxD / 200.0
+    const maxP = 1, maxI = 0.0003, maxD = 5, minD = -5
+    const stepP = maxP / 200.0, stepI = maxI / 200.0, stepD = (maxD - minD) / 200.0
 
     return <div style={style}>
         <LabelSlider
@@ -23,7 +23,7 @@ const PidControls = ({ pid, changePid }) => {
         />
         <LabelSlider
             label='D' value={pid.d} labelValue={(pid.d / maxD).toFixed(3)}
-            min={0} max={maxD} step={stepD}
+            min={minD} max={maxD} step={stepD}
             onChange={() => ({x}) => changePid({ ...pid, d: x })}
         />
     </div>

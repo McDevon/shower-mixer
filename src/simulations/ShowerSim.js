@@ -25,19 +25,22 @@ class ShowerSimulation {
         this.maxDeltaSpeed = 0.02
         this.lastDiff = 0
 
+        this.pidControlValue = 0
+
         this.running = false
         this.usePid = false
 
         this.reset()
     }
 
-    reset(completionCallback) {
+    reset(completionCallback, pidCallback) {
 
         this.controlMinTemperature = this.minTemperature + Math.random() * 12
         this.controlMaxTemperature = this.maxTemperature - Math.random() * 10
         this.currentTemperature = this.controlMinTemperature + Math.random() * 3
         this.mixerTemperature = this.currentTemperature
         this.completionCallback = completionCallback
+        this.pidCallback = pidCallback
 
         for (let i = 0; i < this.delayQueue.size; i++) {
             this.delayQueue.put(this.currentTemperature)
@@ -98,8 +101,8 @@ class ShowerSimulation {
         if (!this.running) { return }
 
         if (this.usePid) {
-            const controlValue = 1 - this.pid.step(this.delayQueue.getTail() || this.currentTemperature, this.targetTemperature)
-            this.mixerTemperature = this.mixerToTemp(controlValue)
+            this.pidControlValue = 1 - this.pid.step(this.delayQueue.getTail() || this.currentTemperature, this.targetTemperature)
+            this.mixerTemperature = this.mixerToTemp(this.pidControlValue)
         }
 
         const distance = (this.mixerTemperature - this.currentTemperature)
@@ -134,7 +137,11 @@ class ShowerSimulation {
         }
     }
 
-    update(_) { }
+    update(_) {
+        if (this.usePid) {
+            this.pidCallback(this.pidControlValue)
+        }
+    }
 
     render(_) {
         const context = this.canvas.getContext('2d')

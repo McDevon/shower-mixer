@@ -2,9 +2,9 @@ import React from 'react'
 import PidControls from './PidControls';
 import Button from './Button';
 
-const InfoColumn = ({ visible, showPid,
+const InfoColumn = ({ visible, showPid, completed,
     pidSelected, restartSelected,
-    pid, changePid, shower }) => {
+    pid, changePid }) => {
 
     const fullColumnStyle = {
         display: 'inline-block',
@@ -29,7 +29,7 @@ const InfoColumn = ({ visible, showPid,
             <h2>{'Well done!'}</h2>
             <p>{"This demo explores the behaviour of shower users, when there is a noticeable delay between controlling the mixer (input) and the temperature change (output)."}</p>
             <p>{"The hypothesis is that the feedback loop created by the user and the shower makes the system output first oscillate, and then stabilize at the convenient temperature range. Much like a PI controller with a slightly too high integral term would control the system."}</p>
-            <Button text='Restart' onClick={restartSelected} disabled={!shower.completed} />
+            <Button text='Restart' onClick={restartSelected} disabled={!completed} />
             <Button text='Run with PI controller' onClick={pidSelected} />
         </div>
     } else {
