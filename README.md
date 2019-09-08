@@ -4,7 +4,7 @@
 
 This project was inspired by the shower mixer example in [The Fifth Discipline](https://en.wikipedia.org/wiki/The_Fifth_Discipline) by Peter Senge. It allows exploring the shower example both manually and with a PID controller.
 
-In addition, this my my toy project to learn basics of React and relearn some JavaScript.
+In addition, this my my toy project for learning basics of React and relearn some JavaScript.
 
 Live demo available [online](https://mcdevon.github.io/shower-mixer).
 
