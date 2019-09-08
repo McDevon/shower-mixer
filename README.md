@@ -54,6 +54,7 @@ Known issues:
 
 - Does not work well on mobile
 - The layout takes too much space vertically
+- Smoothing does not work in all cases
 - PID controls are arbitrarily clamped
 - Quick-n-dirty hacks to make simulation running
 - Most likely a lot of non-idiomatic code
