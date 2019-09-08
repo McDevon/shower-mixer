@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "69b750dfc2e61eb40daa88ba0f2bec43",
+    "revision": "9bfed82525d7f170e44035942718ff2b",
     "url": "/shower-mixer/index.html"
   },
   {
-    "revision": "7c65fbf3eca6633f4720",
+    "revision": "d8998da70963b50137bb",
     "url": "/shower-mixer/static/css/main.34de6062.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/shower-mixer/static/js/2.d1032456.chunk.js"
   },
   {
-    "revision": "7c65fbf3eca6633f4720",
-    "url": "/shower-mixer/static/js/main.cc000e00.chunk.js"
+    "revision": "d8998da70963b50137bb",
+    "url": "/shower-mixer/static/js/main.69889f9e.chunk.js"
   },
   {
     "revision": "373f892fc71685c55788",
