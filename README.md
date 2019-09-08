@@ -2,9 +2,9 @@
 
 > An interactive demo exploring the effects of delay in feedback systems
 
-This project was inspired by the shower mixer example in [The Fifth Discipline](https://en.wikipedia.org/wiki/The_Fifth_Discipline) by Peter Senge. It allows exploring the shower example both manually and with a PID controller.
+This project was inspired by the shower mixer example in [The Fifth Discipline](https://en.wikipedia.org/wiki/The_Fifth_Discipline) by Peter Senge. It allows exploring the shower example both manually and with a PID controller. The purpose of the project is to provide a tool for showing and learning system dynamics.
 
-In addition, this my my toy project for learning basics of React and relearn some JavaScript.
+In addition, this my toy project for learning basics of React and Javascript.
 
 Live demo available [online](https://mcdevon.github.io/shower-mixer).
 
@@ -66,6 +66,7 @@ The following features are implemented:
 ### Missing features:
 
 - Live view of PID controller internal values
+- Sampling rate control for PID
 - Mode with continuously changing target
 
 ## Contributing
