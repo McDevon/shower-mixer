@@ -11,9 +11,9 @@ class ShowerMixer extends React.Component {
         this.state = {
             shower: 1,
             page: {
-                running: 1,
+                running: 0,
                 completed: 0,
-                pid: 1
+                pid: 0
             },
             pid: {
                 p: 0.001,

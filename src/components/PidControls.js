@@ -7,7 +7,7 @@ const PidControls = ({ pid, changePid }) => {
         padding: '10px 0px'
     }
 
-    const maxP = 1, maxI = 0.0003, maxD = 5, minD = -5
+    const maxP = 0.2, maxI = 0.0003, maxD = 5, minD = -5
     const stepP = maxP / 200.0, stepI = maxI / 200.0, stepD = (maxD - minD) / 200.0
 
     return <div style={style}>
