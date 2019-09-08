@@ -21,6 +21,7 @@ class ShowerSimulation {
         this.maxChangeSpeed = 4
         this.completionTime = 4
         this.completeTimer = 0
+        this.timer = 0
 
         this.maxDeltaSpeed = 0.02
         this.lastDiff = 0
@@ -41,6 +42,7 @@ class ShowerSimulation {
         this.mixerTemperature = this.currentTemperature
         this.completionCallback = completionCallback
         this.pidCallback = pidCallback
+        this.timer = 0
 
         for (let i = 0; i < this.delayQueue.size; i++) {
             this.delayQueue.put(this.currentTemperature)
@@ -89,7 +91,7 @@ class ShowerSimulation {
 
     completed() {
         console.log('COMPLETED!')
-        this.completionCallback(this.tempToMixer(this.mixerTemperature))
+        this.completionCallback(this.timer)
     }
 
     setMixer(mixerValue) {
@@ -99,6 +101,8 @@ class ShowerSimulation {
 
     fixedUpdate(dt) {
         if (!this.running) { return }
+
+        this.timer += dt
 
         if (this.usePid) {
             this.pidControlValue = 1 - this.pid.step(this.delayQueue.getTail() || this.currentTemperature, this.targetTemperature)

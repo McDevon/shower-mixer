@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import startRender from '../simulations/RenderLoop'
 import showerSim from '../simulations/ShowerSim'
 import ShowerControl from './ShowerControl';
 import InfoColumn from './InfoColumn';
 import TitleArea from './TitleArea';
+import CompletionDisplay from './CompletionDisplay';
 
 class ShowerMixer extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             shower: 1,
+            time: 0,
             page: {
                 running: 0,
                 completed: 0,
@@ -23,15 +25,15 @@ class ShowerMixer extends React.Component {
         }
         this.canvasElement = React.createRef()
 
-        this.completionCallback = (usePid) => (mixerValue) => {
-            console.log('COMPLETION CALLBACK', this.state.shower, usePid)
+        this.completionCallback = (usePid) => (completionTime) => {
+            console.log('COMPLETION CALLBACK', completionTime)
             this.canvasElement.current.simulation.setRunning(false)
             const newState = {
                 running: 0,
                 completed: 1,
                 pid: usePid
             }
-            this.setState({ page: newState })
+            this.setState({ page: newState, time: completionTime })
         }
         this.pidCallback = (controlValue) => {
             this.setState({ shower: controlValue })
@@ -125,6 +127,7 @@ class ShowerMixer extends React.Component {
                         min={0} max={1} step={0.0025}
                         onChange={() => ({ y }) => { if (this.state.page.running && !this.state.page.pid) this.changeShower(y) }}
                     />
+                    <CompletionDisplay completed={this.state.page.completed} time={this.state.time}/>
                 </div>
                 <InfoColumn visible={this.state.page.completed} showPid={this.state.page.pid}
                     pidSelected={this.pidSelected} restartSelected={this.restartSelected}

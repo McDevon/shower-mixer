@@ -29,7 +29,8 @@ const Button = ({ onClick, text, disabled }) => {
     `
 
     const divStyle = {
-        height: '42px'
+        height: '42px',
+        marginRight: '5px'
     }
 
     return <div style={divStyle}>

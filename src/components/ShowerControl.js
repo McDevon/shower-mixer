@@ -3,12 +3,8 @@ import Slider from 'react-input-slider'
 
 const ShowerControl = ({ value, step, min, max, onChange, suffix='' }) => {
     const divStyle = {
-        marginTop: '5px',
-        marginLeft: '5px',
-        marginRight: '5px',
-        marginBottom: '5px'
+        margin: '10px 5px'
     }
-    console.log(`Mixer value ${value}`)
     return <div style={divStyle}>
         <Slider
             axis="y"
