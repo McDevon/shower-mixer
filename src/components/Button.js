@@ -22,9 +22,9 @@ const Button = ({ onClick, text, disabled }) => {
         outline: none;
     }
     :active {
-        padding: 9px 18px;
-        font-size: 14px;
-        margin: 1px 4px;
+        padding: ${disabled ? "10px 20px" : "9px 18px"};
+        font-size: ${disabled ? "16px" : "14px"};
+        margin: ${disabled ? "0px" : "1px 4px"};
     }
     `
 
